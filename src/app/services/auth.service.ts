@@ -33,7 +33,7 @@ export class AuthService {
       if(this.fireAuth.currentUser){
         this.fireAuth.signOut()
           .then(() => {
-            console.log('Akun Keluar');
+            console.log('Account has been logged out.');
             resolve();
           }).catch((error) => {
             reject();
