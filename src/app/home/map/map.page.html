@@ -6,4 +6,37 @@
 
 <ion-content class="ion-text-center">
   <div #map id="map"></div>
+  <div *ngIf="!isCheckedIn">
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+      <ion-fab-button color="primary" (click)="toggleLoc()">
+        <ion-label>Check-In</ion-label>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="danger" (click)="showCurrentLoc()">
+        <ion-icon name="locate-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
 </ion-content>
+
+<ion-footer *ngIf="isCheckedIn">
+  <ion-row>
+    <ion-col>
+      <ion-item style="margin-top: -8px; margin-bottom: -8px">
+        <ion-label position="floating">Where am I..?</ion-label>
+        <ion-input [(ngModel)]="locName"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col size="auto">
+      <ion-button color="success" (click)="addLocation()">
+        Check In
+      </ion-button>
+    </ion-col>
+    <ion-col size="auto">
+      <ion-button color="danger" (click)="toggleLoc()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
