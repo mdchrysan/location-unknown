@@ -30,10 +30,12 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
     this.validations_form = this.formBuilder.group({
       firstname: new FormControl('', Validators.compose([
-        Validators.required
+        Validators.required,
+        Validators.minLength(1)
       ])),
       lastname: new FormControl('', Validators.compose([
-        Validators.required
+        Validators.required,
+        Validators.minLength(1)
       ])),
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -71,14 +73,34 @@ export class RegisterPage implements OnInit {
     console.log('Loading dismissed!');
   }
 
-  tryRegister() {
-    if(this.validations_form.valid){
-      this.userSrv.setRegisterData(this.validations_form.value);
-      this.router.navigateByUrl('/login');
-    }
-    else{
-      this.presentErrorToast();
-    }
+  async presentToast(message, color) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      color: color,
+      duration: 1000,
+    });
+    toast.present();
+  }
+
+  tryRegister(value) {
+    // if(this.validations_form.valid){
+    //   this.userSrv.setRegisterData(this.validations_form.value);
+    //   this.router.navigateByUrl('/login');
+    // }
+    // else{
+    //   this.presentErrorToast();
+    // }
+    this.authSrv.registerUser(value).then(
+      res => {
+        console.log(res);
+        this.presentToast("Register success! Please login.","success");
+        this.navCtrl.navigateBack('/login')
+      },
+      err => {
+        console.log(err);
+        this.presentToast(err,"danger");
+      }
+    );
   }
 
   togglePassword(): void {
