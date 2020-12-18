@@ -1,9 +1,46 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>friendlist</ion-title>
+    <ion-title text-center *ngIf="!isSearchBarOpened">My Friendlist</ion-title>
+    <ion-searchbar *ngIf="isSearchBarOpened" showCancelButton="true" (ionCancel)="isSearchBarOpened=false" placeholder="Type your friend name..." [(ngModel)]="searchBar" animated="true"></ion-searchbar>
+    <ion-buttons slot="primary">
+      <ion-button color="primary" expand="full" fill="clear" slot="end" *ngIf="!isSearchBarOpened" (click)="isSearchBarOpened=true">
+        <ion-icon name="search-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-text-center">
-  <p>tampilin daftar temen</p>
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <ion-col size="12" size-sm="6">
+        <!-- <div *ngFor="let eachUser of userData | filter:searchBar; let i = index">
+          <ion-card *ngIf="eachUser.role == 'pramuwisata'" [routerLink]="['/', 'profil', 'other', eachUser.key]">
+            <ion-row class="ion-align-items-center ion-justify-content-center" style="padding: 8px">
+              <ion-col size="4" size-sm="3" style="display:flex">
+                <ion-row class="ion-align-items-center" style="padding: 0px">
+                  <img id="tourGuideProfilePicture{{i}}" src="{{ eachUser.foto }}" class="circle-image" (load)="imageLoaded($event)"/>
+                </ion-row>
+              </ion-col>
+              <ion-col size="8" size-sm="8" class="ion-no-padding" style="padding-left: 8px; padding-right: 8px;">
+                <ion-card-title>{{ eachUser.fullname }}</ion-card-title>
+                <ion-card-subtitle style="padding-top: 4px">{{ eachUser.xp }} XP</ion-card-subtitle>
+                <ion-card-subtitle class="ellipsis" style="padding-top: 4px" *ngIf="eachUser.bahasa">
+                  Keterampilan Bahasa:
+                  <span *ngFor="let eachUserBahasa of eachUser.bahasa | slice:0:(eachUser.bahasa.length-1)">
+                    {{ eachUserBahasa }}, 
+                  </span>
+                  <span *ngFor="let eachUserBahasa of eachUser.bahasa | slice:(eachUser.bahasa.length-1):eachUser.bahasa.length">
+                    {{ eachUserBahasa }}. 
+                  </span>
+                  
+                </ion-card-subtitle>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </div> -->
+        <p>Tes</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
