@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-friendlist',
@@ -6,47 +8,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./friendlist.page.scss'],
 })
 export class FriendlistPage implements OnInit {
-  searchBar: string
-  constructor() { }
+  private userData: any;
+  searchBar: string;
 
-  friendList = [{
-      "id": 1,
-      "firstname": "Ana",
-      "lastname": "Banana",
-    },
-    {
-      "id": 2,
-      "firstname": "Budi",
-      "lastname": "Wahyudi",
-    },
-    {
-      "id": 3,
-      "firstname": "Caca",
-      "lastname": "Marica",
-    },
-    {
-      "id": 4,
-      "firstname": "Denny",
-      "lastname": "Setiawan",
-    },
-    {
-      "id": 5,
-      "firstname": "Endah",
-      "lastname": "Sukamti",
-    },
-    {
-      "id": 6,
-      "firstname": "Fiona",
-      "lastname": "Lim",
-    },
-    {
-      "id": 7,
-      "firstname": "Gerry",
-      "lastname": "Geraldi",
-    }
-  ]
+  constructor(
+    private userSrv: UserService
+  ) { }
 
   ngOnInit() {
+    this.userSrv.getAll().snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({key: c.payload.key, ...c.payload.val()}))  
+      )
+    ).subscribe(data => {
+      this.userData = data;
+    });
   }
 
 }
