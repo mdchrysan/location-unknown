@@ -49,7 +49,7 @@ export class RegisterPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    this.userData = this.userSrv.getRegisterData();
+    // this.userData = this.userSrv.getRegisterData();
   }
 
   async presentErrorToast() {
@@ -69,7 +69,7 @@ export class RegisterPage implements OnInit {
     });
     await loading.present();
 
-    const { role, data } = await loading.onDidDismiss();
+    const { data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
   }
 
@@ -82,25 +82,48 @@ export class RegisterPage implements OnInit {
     toast.present();
   }
 
-  tryRegister(value) {
-    // if(this.validations_form.valid){
-    //   this.userSrv.setRegisterData(this.validations_form.value);
-    //   this.router.navigateByUrl('/login');
-    // }
-    // else{
-    //   this.presentErrorToast();
-    // }
-    this.authSrv.registerUser(value).then(
-      res => {
-        console.log(res);
-        this.presentToast("Register success! Please login.","success");
-        this.navCtrl.navigateBack('/login')
-      },
-      err => {
-        console.log(err);
-        this.presentToast(err,"danger");
-      }
-    );
+  registerUser() {
+    if(this.validations_form.valid){
+      this.userData = this.validations_form.value
+    }else{
+      this.presentErrorToast();
+    }
+
+    if(this.userData != null){
+      this.presentLoading().then(() => {
+        this.authSrv.registerUser(this.userData)
+        .then(res => {
+          console.log(res);
+          this.idUser = res.user.uid;
+          this.addUserData();
+          this.presentToast("Register success! Please login.","success");
+          this.navCtrl.navigateBack('/login');
+        }, err => {
+          console.log(err);
+          this.router.navigateByUrl('/register');
+          this.presentToast("Email telah digunakan oleh pengguna lain, silahkan menggunakan email lain", "warning");
+        });
+      });
+    }
+    else{
+      this.router.navigateByUrl('/register');
+      this.presentToast("Terjadi kesalahan, silahkan masukkan data pada form kembali", "danger");
+    }
+    // this.authSrv.registerUser(value).then(
+    //   res => {
+    //     console.log(res);
+    //     this.presentToast("Register success! Please login.","success");
+    //     this.navCtrl.navigateBack('/login')
+    //   },
+    //   err => {
+    //     console.log(err);
+    //     this.presentToast(err,"danger");
+    //   }
+    // );
+  }
+
+  addUserData(){
+
   }
 
   togglePassword(): void {

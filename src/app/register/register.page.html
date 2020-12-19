@@ -19,7 +19,7 @@
         </div>
         
         <div class="ion-padding-horizontal">
-          <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister()">
+          <form class="form" [formGroup]="validations_form" (ngSubmit)="registerUser()">
       
             <!-- firstname -->
             <ion-item lines="full" style="--background: transparent;">
@@ -71,8 +71,7 @@
                   color="primary"
                   expand="block"
                   mode="ios"
-                  [disabled]="!validations_form.valid"
-                  (click)="registerUser()">
+                  [disabled]="!validations_form.valid">
                   Register
                 </ion-button>
               </ion-col>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -23,6 +23,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private navCtrl: NavController,
+    private loadingCtrl: LoadingController,
     private authSrv: AuthService,
     private formBuilder: FormBuilder
   ) { }
@@ -40,8 +41,17 @@ export class LoginPage implements OnInit {
     });
   }
 
+  async presentLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Registering your account...',
+      duration: 3000,
+    });
+    await loading.present();
+  }
+
   loginUser() {
     const value= this.form.value;
+    
     this.authSrv.loginUser(value).then(
       (res) => {
         console.log(res);

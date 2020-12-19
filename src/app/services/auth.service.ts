@@ -18,22 +18,10 @@ export class AuthService {
     return new Promise<any>((resolve, reject) => {
       this.fireAuth.createUserWithEmailAndPassword(value.email, value.password)
         .then(
-          (userCred) => {
-            console.log(value.name)
-            this.fireDb.database.ref('users/' + userCred.user.uid).set({
-              firstname: value.firstname,
-              lastname: value.lastname,
-              email: value.email
-            });
-          })
-        .then(
-          res => {
-            resolve(res)
-          },
+          res => resolve(res),
           err => reject(err)
         );
-      }
-    );
+    });
   }
 
   loginUser(value) {
