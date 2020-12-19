@@ -34,6 +34,14 @@ export class UserService {
     return this.userRef.update(key, value);
   }
 
+  delete(key: string): Promise<void> {
+    return this.userRef.remove(key);
+  }
+
+  deleteAll(): Promise<void> {
+    return this.userRef.remove();
+  }
+
   getDetail(userId: string) {
     return this.db.object('/user/' + userId).valueChanges();
   }

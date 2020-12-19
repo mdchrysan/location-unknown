@@ -84,6 +84,7 @@ export class RegisterPage implements OnInit {
 
   registerUser() {
     if(this.validations_form.valid){
+      console.log("value dari form---> ", this.validations_form.value);
       this.userData = this.validations_form.value
     }else{
       this.presentErrorToast();
@@ -94,36 +95,31 @@ export class RegisterPage implements OnInit {
         this.authSrv.registerUser(this.userData)
         .then(res => {
           console.log(res);
+          console.log("userdata---> ", this.userData);
           this.idUser = res.user.uid;
           this.addUserData();
-          this.presentToast("Register success! Please login.","success");
-          this.navCtrl.navigateBack('/login');
         }, err => {
           console.log(err);
           this.router.navigateByUrl('/register');
-          this.presentToast("Email telah digunakan oleh pengguna lain, silahkan menggunakan email lain", "warning");
+          this.presentToast("Email's already used.", "warning");
         });
       });
     }
     else{
       this.router.navigateByUrl('/register');
-      this.presentToast("Terjadi kesalahan, silahkan masukkan data pada form kembali", "danger");
+      this.presentToast("Register failed.", "danger");
     }
-    // this.authSrv.registerUser(value).then(
-    //   res => {
-    //     console.log(res);
-    //     this.presentToast("Register success! Please login.","success");
-    //     this.navCtrl.navigateBack('/login')
-    //   },
-    //   err => {
-    //     console.log(err);
-    //     this.presentToast(err,"danger");
-    //   }
-    // );
   }
 
   addUserData(){
-
+    console.log("iduser---> ", this.idUser);
+    console.log("userdata---> ", this.userData);
+    this.userSrv.create(this.idUser, this.userData)
+      .then(res => {
+        this.router.navigateByUrl('/login');
+        this.presentToast("Register success! Please login.","success");
+      })
+      .catch(error => console.log(error));;
   }
 
   togglePassword(): void {
