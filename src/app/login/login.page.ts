@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -22,7 +23,9 @@ export class LoginPage implements OnInit {
   };
 
   constructor(
+    private router: Router,
     private navCtrl: NavController,
+    private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private authSrv: AuthService,
     private formBuilder: FormBuilder
@@ -43,25 +46,40 @@ export class LoginPage implements OnInit {
 
   async presentLoading() {
     const loading = await this.loadingCtrl.create({
-      message: 'Registering your account...',
+      message: 'Trying to login...',
       duration: 3000,
     });
     await loading.present();
   }
 
+  async presentToast(toastMessage, toastColor) {
+    const toast = await this.toastCtrl.create({
+      message: toastMessage,
+      duration: 3000,
+      position: 'bottom',
+      color: toastColor,
+    });
+
+    await toast.present();
+  }
+
   loginUser() {
     const value= this.form.value;
-    
-    this.authSrv.loginUser(value).then(
-      (res) => {
-        console.log(res);
-        this.errorMessage = '';
-        this.navCtrl.navigateForward('/home');
-      },
-      (err) => {
-        this.errorMessage = 'Your email or password is wrong.';
-      }
-    );
+    this.presentLoading().then(() => {
+      this.authSrv.loginUser(value).then(
+        (res) => {
+          console.log(res);
+          this.errorMessage = '';
+          this.navCtrl.navigateForward('/home');
+          this.presentToast("Login success", "success");
+        },
+        (err) => {
+          console.log(err);
+          this.router.navigateByUrl('/login');
+          this.presentToast("Your email or password doesn't valid.", "warning");
+        }
+      );
+    })
   }
 
   togglePassword(): void {
