@@ -4,7 +4,7 @@ export class User {
     lastname: string;
     email: string;
     password: string;
-    foto?: string;
+    foto: string;
     constructor(
         key: string, 
         firstname: string,

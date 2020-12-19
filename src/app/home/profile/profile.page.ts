@@ -26,8 +26,6 @@ export class ProfilePage implements OnInit {
 
   getIdUser(){
     this.authSrv.userDetails().subscribe(res => {
-      console.log("res---> ", res);
-      console.log("uid--->", res.uid);
       if(res !== null){
         this.idUser = res.uid;
         this.getUserData();

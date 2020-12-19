@@ -48,10 +48,6 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  ionViewWillEnter(){
-    // this.userData = this.userSrv.getRegisterData();
-  }
-
   async presentErrorToast() {
     const toast = await this.toastCtrl.create({
       message: 'Failed to register. Please fill all the form.',
@@ -84,7 +80,6 @@ export class RegisterPage implements OnInit {
 
   registerUser() {
     if(this.validations_form.valid){
-      console.log("value dari form---> ", this.validations_form.value);
       this.userData = this.validations_form.value
     }else{
       this.presentErrorToast();
@@ -95,7 +90,6 @@ export class RegisterPage implements OnInit {
         this.authSrv.registerUser(this.userData)
         .then(res => {
           console.log(res);
-          console.log("userdata---> ", this.userData);
           this.idUser = res.user.uid;
           this.addUserData();
         }, err => {

@@ -13,14 +13,14 @@
             <ion-img src="assets/icon/happy.png"></ion-img>
           </ion-col>
           <ion-col size="10" sizeMd="8" class="ion-text-center">
-            <ion-text>
+            <ion-text *ngIf="!userData">
               <h2 class="text-bold">Maria Dimansi<br>Chrysandini</h2>
               <h4>00000022248</h4>
             </ion-text>
-            <!-- <ion-text *ngIf="userData">
+            <ion-text *ngIf="userData">
               <h2 class="text-bold">{{ userData.firstname }}<br>{{ userData.lastname }}</h2>
               <h4>{{ userData.email }}</h4>
-            </ion-text> -->
+            </ion-text>
           </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-center ion-align-items-center">
@@ -40,7 +40,7 @@
         </ion-row>
         <ion-row class="ion-justify-content-left ion-align-items-center">
           <ion-col size="11" size-md="6">
-            <p>Maria hasn't checked in at anywhere.</p>
+            <p>{{ userData.firstname }} hasn't checked in at anywhere.</p>
           </ion-col>
         </ion-row>
       </ion-col>
